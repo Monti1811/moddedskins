@@ -115,4 +115,7 @@ end)
 MarkUserIDRPC("ModdedSkins", "SetClientOwned")
 MarkUserIDRPC("ModdedSkins", "SetPlayerSkinServer")
 
-TheModdedInventory:SetClientOwnedSkins()
+-- Need to use AddSimPostInit as RPC namespaces are not yet defined
+MSENV.AddSimPostInit(function()
+	TheModdedInventory:SetClientOwnedSkins()
+end)
