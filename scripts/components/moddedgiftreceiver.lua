@@ -53,7 +53,8 @@ local ModdedGiftReceiver = Class(function(self, inst) --Hornet: easier to just m
 
     self.onclosepopup = function(doer, data)
         if data.popup == POPUPS.GIFTITEM then
-			--self:OnStopOpenGift(data.args[1])
+            self.should_open_wardrobe = data.args[1]
+            --self:OnStopOpenGift(data.args[1])
         end
     end
     inst:ListenForEvent("ms_closepopup", self.onclosepopup)

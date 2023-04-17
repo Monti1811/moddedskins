@@ -278,8 +278,15 @@ AddStategraphPostInit("wilson", function(sg)
 		
 		if _doneopengift ~= nil then
 			opengift.events["ms_doneopengift"].fn = function(inst, data)
-				if data.wardrobe == nil then data.wardrobe = inst.components.moddedgiftreceiver.giftmachine end
-				_doneopengift(inst, data)
+				inst:DoTaskInTime(0, function()
+					if data.wardrobe == nil then
+						if inst.components.moddedgiftreceiver.should_open_wardrobe then
+							data.wardrobe = inst.components.moddedgiftreceiver.giftmachine
+							inst.components.moddedgiftreceiver.should_open_wardrobe = nil
+						end
+					end
+					_doneopengift(inst, data)
+				end)
 			end
 		end
 	end
