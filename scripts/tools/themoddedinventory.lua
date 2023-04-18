@@ -116,7 +116,20 @@ function TheModdedInventory:Load()
                 skin_queue = invdata.skin_queue or {}
                 unlocked_skins = invdata.unlocked_skins or {}
                 unlocked_skins_sessions = invdata.unlocked_skins_sessions or {}
-                unlocked_skins_sessions[self.session_id] = unlocked_skins_sessions[self.session_id] or {}
+                --session_id is empty string if in not ingame, i.e in the main menu
+                if self.session_id == "" then
+                    -- Loop through all skins from all different sessions and add them to the table of the unlocked skins of the main menu
+                    unlocked_skins_sessions[self.session_id] = {}
+                    for session, unlocked_session_skins in pairs(unlocked_skins_sessions) do
+                        for unlocked_skin, bool in pairs(unlocked_session_skins) do
+                            if bool then
+                                unlocked_skins_sessions[self.session_id][unlocked_skin] = true
+                            end
+                        end
+                    end
+                else
+                    unlocked_skins_sessions[self.session_id] = unlocked_skins_sessions[self.session_id] or {}
+                end
             else
                 print("Failed to load TheModdedInventory!", status, invdata)
             end
