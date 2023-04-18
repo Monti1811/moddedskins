@@ -104,7 +104,12 @@ function TheModdedInventory:SetClientOwnedSkins()
 end
 
 function TheModdedInventory:Save()
-    local str = json.encode({skin_queue = skin_queue, unlocked_skins = unlocked_skins, unlocked_skins_sessions = unlocked_skins_sessions})
+    -- Remove unnecessary empty table entries for sessions that have no skins
+    local unlocked_skins_sessions_to_save = deepcopy(unlocked_skins_sessions)
+    if next(unlocked_skins_sessions_to_save[self.session_id]) == nil then
+        unlocked_skins_sessions_to_save[self.session_id] = nil
+    end
+    local str = json.encode({skin_queue = skin_queue, unlocked_skins = unlocked_skins, unlocked_skins_sessions = unlocked_skins_sessions_to_save})
     TheSim:SetPersistentString("moddedskins", str, false)
 end
 
